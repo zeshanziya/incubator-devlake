@@ -24,6 +24,7 @@ import (
 	"github.com/apache/incubator-devlake/core/errors"
 	"github.com/apache/incubator-devlake/core/plugin"
 	helper "github.com/apache/incubator-devlake/helpers/pluginhelper/api"
+	"github.com/apache/incubator-devlake/plugins/example/models/migrationscripts"
 	"github.com/apache/incubator-devlake/plugins/example/tasks"
 )
 
@@ -32,6 +33,7 @@ var _ interface {
 	plugin.PluginInit
 	plugin.PluginTask
 	plugin.PluginSource
+	plugin.PluginMigration
 } = (*Example)(nil)
 
 type Example struct{}
@@ -81,4 +83,8 @@ func (p Example) PrepareTaskData(taskCtx plugin.TaskContext, options map[string]
 
 func (p Example) RootPkgPath() string {
 	return "github.com/apache/incubator-devlake/plugins/example"
+}
+
+func (p Example) MigrationScripts() []plugin.MigrationScript {
+	return migrationscripts.All()
 }
