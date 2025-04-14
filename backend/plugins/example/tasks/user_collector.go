@@ -22,21 +22,21 @@ import (
 	"github.com/apache/incubator-devlake/core/plugin"
 )
 
-var _ plugin.SubTaskEntryPoint = CollectData
+var _ plugin.SubTaskEntryPoint = CollectUsers
 
 // CollectChat collect all chats that bot is in
-func CollectData(taskCtx plugin.SubTaskContext) errors.Error {
+func CollectUsers(taskCtx plugin.SubTaskContext) errors.Error {
 	data := taskCtx.GetData().(*ExampleTaskData)
 	// log the message
-	taskCtx.GetLogger().Info("collect data", data.Options.ConnectionId, data.Options.NumOfDaysToCollect)
+	taskCtx.GetLogger().Info("collect users", data.Options.ConnectionId, data.Options.NumOfDaysToCollect)
 	// format above line into single string
 
 	return nil
 }
 
-var CollectDataMeta = plugin.SubTaskMeta{
-	Name:             "collectData",
-	EntryPoint:       CollectData,
+var CollectUsersMeta = plugin.SubTaskMeta{
+	Name:             "collectUsers",
+	EntryPoint:       CollectUsers,
 	EnabledByDefault: true,
-	Description:      "Collect data from Example plugin",
+	Description:      "Collect users from Example plugin",
 }
