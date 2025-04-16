@@ -28,7 +28,7 @@ import (
 	"github.com/apache/incubator-devlake/plugins/example/apimodels"
 )
 
-const RAW_USER_TABLE = "example_api_users"
+const RAW_USER_TABLE = "example_users"
 
 var CollectUsersMeta = plugin.SubTaskMeta{
 	Name:             "collectUsers",

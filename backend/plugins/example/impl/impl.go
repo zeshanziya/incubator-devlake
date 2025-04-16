@@ -67,6 +67,7 @@ func (p Example) ScopeConfig() dal.Tabler {
 func (p Example) SubTaskMetas() []plugin.SubTaskMeta {
 	return []plugin.SubTaskMeta{
 		tasks.CollectUsersMeta,
+		tasks.ExtractUserItemMeta,
 	}
 }
 
