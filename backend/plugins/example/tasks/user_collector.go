@@ -18,25 +18,70 @@ limitations under the License.
 package tasks
 
 import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+
 	"github.com/apache/incubator-devlake/core/errors"
 	"github.com/apache/incubator-devlake/core/plugin"
+	"github.com/apache/incubator-devlake/helpers/pluginhelper/api"
+	"github.com/apache/incubator-devlake/plugins/example/apimodels"
 )
 
-var _ plugin.SubTaskEntryPoint = CollectUsers
-
-// CollectChat collect all chats that bot is in
-func CollectUsers(taskCtx plugin.SubTaskContext) errors.Error {
-	data := taskCtx.GetData().(*ExampleTaskData)
-	// log the message
-	taskCtx.GetLogger().Info("collect users", data.Options.ConnectionId, data.Options.NumOfDaysToCollect)
-	// format above line into single string
-
-	return nil
-}
+const RAW_USER_TABLE = "example_api_users"
 
 var CollectUsersMeta = plugin.SubTaskMeta{
 	Name:             "collectUsers",
 	EntryPoint:       CollectUsers,
 	EnabledByDefault: true,
-	Description:      "Collect users from Example plugin",
+	Description:      "Collect users from Random User API",
+	DomainTypes:      []string{plugin.DOMAIN_TYPE_CROSS},
+}
+
+// CollectUsers collects user data from the Random User API
+func CollectUsers(taskCtx plugin.SubTaskContext) errors.Error {
+	data := taskCtx.GetData().(*ExampleTaskData)
+	logger := taskCtx.GetLogger()
+	connectionId := data.Options.ConnectionId
+	numOfDaysToCollect := int(data.Options.NumOfDaysToCollect)
+
+	// If numOfDaysToCollect is not specified or is less than 1, default to 10 users
+	numUsers := 10
+	if numOfDaysToCollect > 0 {
+		numUsers = numOfDaysToCollect
+	}
+
+	logger.Info("Collecting users from Random User API", "connectionId", connectionId, "numUsers", numUsers)
+
+	// Create API client
+	apiClient, err := CreateApiClient(taskCtx)
+	if err != nil {
+		return err
+	}
+
+	// Create collector
+	collector, err := api.NewApiCollector(api.ApiCollectorArgs{
+		RawDataSubTaskArgs: api.RawDataSubTaskArgs{
+			Ctx:    taskCtx,
+			Table:  RAW_USER_TABLE,
+			Params: ExampleApiParams{ConnectionId: connectionId},
+		},
+		ApiClient: apiClient,
+		// We don't need an iterator since we're making a single request
+		UrlTemplate: fmt.Sprintf("?results=%d", numUsers),
+		ResponseParser: func(res *http.Response) ([]json.RawMessage, errors.Error) {
+			body := &apimodels.ExampleUserApiResult{}
+			err = api.UnmarshalResponse(res, body)
+			if err != nil {
+				return nil, errors.Convert(err)
+			}
+			return body.Results, nil
+		},
+	})
+
+	if err != nil {
+		return err
+	}
+
+	return collector.Execute()
 }
