@@ -66,6 +66,7 @@ func CollectUsers(taskCtx plugin.SubTaskContext) errors.Error {
 			Table:  RAW_USER_TABLE,
 			Params: ExampleApiParams{ConnectionId: connectionId},
 		},
+		// Incremental: true,
 		ApiClient: apiClient,
 		// We don't need an iterator since we're making a single request
 		UrlTemplate: fmt.Sprintf("?results=%d", numUsers),
