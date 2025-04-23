@@ -25,10 +25,10 @@ import (
 	"github.com/apache/incubator-devlake/core/errors"
 	"github.com/apache/incubator-devlake/core/plugin"
 	"github.com/apache/incubator-devlake/helpers/pluginhelper/api"
-	"github.com/apache/incubator-devlake/plugins/example/apimodels"
+	"github.com/apache/incubator-devlake/plugins/axlzee/apimodels"
 )
 
-const RAW_USER_TABLE = "example_users"
+const RAW_USER_TABLE = "axlzee_users"
 
 var CollectUsersMeta = plugin.SubTaskMeta{
 	Name:             "collectUsers",
@@ -40,7 +40,7 @@ var CollectUsersMeta = plugin.SubTaskMeta{
 
 // CollectUsers collects user data from the Random User API
 func CollectUsers(taskCtx plugin.SubTaskContext) errors.Error {
-	data := taskCtx.GetData().(*ExampleTaskData)
+	data := taskCtx.GetData().(*AxlzeeTaskData)
 	logger := taskCtx.GetLogger()
 	connectionId := data.Options.ConnectionId
 	numOfDaysToCollect := int(data.Options.NumOfDaysToCollect)
@@ -64,14 +64,14 @@ func CollectUsers(taskCtx plugin.SubTaskContext) errors.Error {
 		RawDataSubTaskArgs: api.RawDataSubTaskArgs{
 			Ctx:    taskCtx,
 			Table:  RAW_USER_TABLE,
-			Params: ExampleApiParams{ConnectionId: connectionId},
+			Params: AxlzeeApiParams{ConnectionId: connectionId},
 		},
 		// Incremental: true,
 		ApiClient: apiClient,
 		// We don't need an iterator since we're making a single request
 		UrlTemplate: fmt.Sprintf("?results=%d", numUsers),
 		ResponseParser: func(res *http.Response) ([]json.RawMessage, errors.Error) {
-			body := &apimodels.ExampleUserApiResult{}
+			body := &apimodels.AxlzeeUserApiResult{}
 			err = api.UnmarshalResponse(res, body)
 			if err != nil {
 				return nil, errors.Convert(err)

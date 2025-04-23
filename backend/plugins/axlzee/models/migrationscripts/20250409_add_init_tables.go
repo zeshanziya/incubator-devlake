@@ -21,7 +21,7 @@ import (
 	"github.com/apache/incubator-devlake/core/context"
 	"github.com/apache/incubator-devlake/core/errors"
 	"github.com/apache/incubator-devlake/helpers/migrationhelper"
-	"github.com/apache/incubator-devlake/plugins/example/models/migrationscripts/archived"
+	"github.com/apache/incubator-devlake/plugins/axlzee/models/migrationscripts/archived"
 )
 
 type addInitTables struct {
@@ -31,7 +31,7 @@ func (u *addInitTables) Up(basicRes context.BasicRes) errors.Error {
 	db := basicRes.GetDal()
 
 	err := db.DropTables(
-		&archived.ExampleUser{},
+		&archived.AxlzeeUser{},
 	)
 	if err != nil {
 		return err
@@ -39,7 +39,7 @@ func (u *addInitTables) Up(basicRes context.BasicRes) errors.Error {
 
 	err = migrationhelper.AutoMigrateTables(
 		basicRes,
-		&archived.ExampleUser{},
+		&archived.AxlzeeUser{},
 	)
 	if err != nil {
 		return err
@@ -52,5 +52,5 @@ func (*addInitTables) Version() uint64 {
 }
 
 func (*addInitTables) Name() string {
-	return "Example init schemas"
+	return "Axlzee init schemas"
 }

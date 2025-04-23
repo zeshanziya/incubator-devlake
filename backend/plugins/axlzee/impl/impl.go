@@ -24,8 +24,8 @@ import (
 	"github.com/apache/incubator-devlake/core/errors"
 	"github.com/apache/incubator-devlake/core/plugin"
 	helper "github.com/apache/incubator-devlake/helpers/pluginhelper/api"
-	"github.com/apache/incubator-devlake/plugins/example/models/migrationscripts"
-	"github.com/apache/incubator-devlake/plugins/example/tasks"
+	"github.com/apache/incubator-devlake/plugins/axlzee/models/migrationscripts"
+	"github.com/apache/incubator-devlake/plugins/axlzee/tasks"
 )
 
 var _ interface {
@@ -34,58 +34,58 @@ var _ interface {
 	plugin.PluginTask
 	plugin.PluginSource
 	plugin.PluginMigration
-} = (*Example)(nil)
+} = (*Axlzee)(nil)
 
-type Example struct{}
+type Axlzee struct{}
 
-func (p Example) Init(basicRes context.BasicRes) errors.Error {
+func (p Axlzee) Init(basicRes context.BasicRes) errors.Error {
 
 	return nil
 }
 
 
-func (p Example) Description() string {
-	return "To collect and enrich data from Example Source"
+func (p Axlzee) Description() string {
+	return "To collect and enrich data from axlzee Source"
 }
 
-func (p Example) Name() string {
-	return "example"
+func (p Axlzee) Name() string {
+	return "axlzee"
 }
 
-func (p Example) Connection() dal.Tabler {
+func (p Axlzee) Connection() dal.Tabler {
 	return nil
 }
 
-func (p Example) Scope() plugin.ToolLayerScope {
+func (p Axlzee) Scope() plugin.ToolLayerScope {
 	return nil
 }
 
-func (p Example) ScopeConfig() dal.Tabler {
+func (p Axlzee) ScopeConfig() dal.Tabler {
 	return nil
 }
 
-func (p Example) SubTaskMetas() []plugin.SubTaskMeta {
+func (p Axlzee) SubTaskMetas() []plugin.SubTaskMeta {
 	return []plugin.SubTaskMeta{
 		tasks.CollectUsersMeta,
 		tasks.ExtractUserItemMeta,
 	}
 }
 
-func (p Example) PrepareTaskData(taskCtx plugin.TaskContext, options map[string]interface{}) (interface{}, errors.Error) {
-	var op tasks.ExampleOptions
+func (p Axlzee) PrepareTaskData(taskCtx plugin.TaskContext, options map[string]interface{}) (interface{}, errors.Error) {
+	var op tasks.AxlzeeOptions
 	if err := helper.Decode(options, &op, nil); err != nil {
 		return nil, err
 	}
 	taskCtx.GetLogger().Info("collect data", "data", op)
-	return &tasks.ExampleTaskData{
+	return &tasks.AxlzeeTaskData{
 		Options:   &op,
 	}, nil
 }
 
-func (p Example) RootPkgPath() string {
-	return "github.com/apache/incubator-devlake/plugins/example"
+func (p Axlzee) RootPkgPath() string {
+	return "github.com/apache/incubator-devlake/plugins/axlzee"
 }
 
-func (p Example) MigrationScripts() []plugin.MigrationScript {
+func (p Axlzee) MigrationScripts() []plugin.MigrationScript {
 	return migrationscripts.All()
 }

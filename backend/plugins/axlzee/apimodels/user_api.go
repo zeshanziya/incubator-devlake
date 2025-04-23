@@ -2,7 +2,7 @@ package apimodels
 
 import "encoding/json"
 
-type ExampleUserItem struct {
+type AxlzeeUserItem struct {
 		Gender string `json:"gender"`
 		Name   struct {
 			First string `json:"first"`
@@ -22,7 +22,7 @@ type ExampleUserItem struct {
 		} `json:"login"`
 }
 
-type ExampleUserApiResult struct {
+type AxlzeeUserApiResult struct {
 	Results []json.RawMessage `json:"results"`
 	Info json.RawMessage `json:"info"`
 }

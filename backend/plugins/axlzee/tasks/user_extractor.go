@@ -23,29 +23,29 @@ import (
 	"github.com/apache/incubator-devlake/core/errors"
 	"github.com/apache/incubator-devlake/core/plugin"
 	"github.com/apache/incubator-devlake/helpers/pluginhelper/api"
-	"github.com/apache/incubator-devlake/plugins/example/apimodels"
-	"github.com/apache/incubator-devlake/plugins/example/models"
+	"github.com/apache/incubator-devlake/plugins/axlzee/apimodels"
+	"github.com/apache/incubator-devlake/plugins/axlzee/models"
 )
 
 var _ plugin.SubTaskEntryPoint = ExtractUserItem
 
 func ExtractUserItem(taskCtx plugin.SubTaskContext) errors.Error {
-	data := taskCtx.GetData().(*ExampleTaskData)
+	data := taskCtx.GetData().(*AxlzeeTaskData)
 	extractor, err := api.NewApiExtractor(api.ApiExtractorArgs{
 		RawDataSubTaskArgs: api.RawDataSubTaskArgs{
 			Ctx: taskCtx,
-			Params: ExampleApiParams{
+			Params: AxlzeeApiParams{
 				ConnectionId: data.Options.ConnectionId,
 			},
 			Table: RAW_USER_TABLE,
 		},
 		Extract: func(row *api.RawData) ([]interface{}, errors.Error) {
-			body := &apimodels.ExampleUserItem{}
+			body := &apimodels.AxlzeeUserItem{}
 			err := errors.Convert(json.Unmarshal(row.Data, body))
 			if err != nil {
 				return nil, err
 			}
-			user := &models.ExampleUser{}
+			user := &models.AxlzeeUser{}
 			user.ConnectionId = data.Options.ConnectionId
 			user.Age = body.Dob.Age
 			user.Email = body.Email
@@ -71,5 +71,5 @@ var ExtractUserItemMeta = plugin.SubTaskMeta{
 	Name:             "extractUserItem",
 	EntryPoint:       ExtractUserItem,
 	EnabledByDefault: true,
-	Description:      "Extract raw users data into tool layer table example_api_users",
+	Description:      "Extract raw users data into tool layer table axlzee_users",
 }

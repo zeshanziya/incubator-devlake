@@ -19,17 +19,17 @@ package main
 
 import (
 	"github.com/apache/incubator-devlake/core/runner"
-	"github.com/apache/incubator-devlake/plugins/example/impl"
+	"github.com/apache/incubator-devlake/plugins/axlzee/impl"
 	"github.com/spf13/cobra"
 )
 
-var PluginEntry impl.Example
+var PluginEntry impl.Axlzee
 
 // standalone mode for debugging
 func main() {
-	cmd := &cobra.Command{Use: "example"}
-	connectionId := cmd.Flags().Uint64P("connectionId", "c", 0, "example connection id")
-	numOfDaysToCollect := cmd.Flags().IntP("numOfDaysToCollect", "n", 8, "example collect days")
+	cmd := &cobra.Command{Use: "axlzee"}
+	connectionId := cmd.Flags().Uint64P("connectionId", "c", 0, "axlzee connection id")
+	numOfDaysToCollect := cmd.Flags().IntP("numOfDaysToCollect", "n", 8, "axlzee collect days")
 	timeAfter := cmd.Flags().StringP("timeAfter", "a", "", "collect data that are created after specified time, ie 2006-01-02T15:04:05Z")
 
 	_ = cmd.MarkFlagRequired("connectionId")

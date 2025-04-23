@@ -17,15 +17,15 @@ limitations under the License.
 
 package tasks
 
-type ExampleApiParams struct {
+type AxlzeeApiParams struct {
 	ConnectionId uint64 `json:"connectionId"`
 }
 
-type ExampleOptions struct {
+type AxlzeeOptions struct {
 	ConnectionId       uint64  `json:"connectionId"`
 	NumOfDaysToCollect float64 `json:"numOfDaysToCollect"`
 }
 
-type ExampleTaskData struct {
-	Options   *ExampleOptions
+type AxlzeeTaskData struct {
+	Options   *AxlzeeOptions
 }

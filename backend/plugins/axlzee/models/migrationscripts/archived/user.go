@@ -6,7 +6,7 @@ import (
 	"github.com/apache/incubator-devlake/core/models/migrationscripts/archived"
 )
 
-type ExampleUser struct {
+type AxlzeeUser struct {
 	archived.NoPKModel `json:"-"`
 
 	ConnectionId uint64 `gorm:"primaryKey"`
@@ -25,6 +25,6 @@ type ExampleUser struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func (ExampleUser) TableName() string {
-	return "_tool_example_users"
+func (AxlzeeUser) TableName() string {
+	return "_tool_axlzee_users"
 }
