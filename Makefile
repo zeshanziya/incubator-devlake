@@ -19,7 +19,7 @@
 
 SHA ?= $(shell if [ -d .git ]; then git show -s --format=%h; else echo "unknown_sha"; fi)
 TAG ?= $(shell if [ -d .git ]; then git tag --points-at HEAD; else echo "local_build"; fi)
-IMAGE_REPO ?= "apache"
+IMAGE_REPO ?= "zeshanziya"
 VERSION = $(TAG)@$(SHA)
 
 build-server-image:

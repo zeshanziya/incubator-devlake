@@ -21,11 +21,8 @@ env:
   DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 on:
   push:
-    tags:
-      - "v*"
     branches:
-      - main
-      - release-*
+      - sample-plugin
 
 jobs:
   build-and-push-builder:
